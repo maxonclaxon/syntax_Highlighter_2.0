@@ -142,12 +142,12 @@ namespace Syntax_Highlighter
                 if (line.Contains("}"))
                 {
                     inFunction = false;
-                    lineLvl -= 1;
+                    lineLvl -= 2;
                 }
                 if (line.Contains("{"))
                 {
                     inFunction = true;
-                    lineLvl += 1;
+                    lineLvl += 2;
                 }
                 splitWords(line);
                 
@@ -157,13 +157,6 @@ namespace Syntax_Highlighter
             {
                 Console.ForegroundColor = word.col;
                 Console.Write(word.text);
-                //if (word.text.Contains("\r\n") && word.inFunc == true)
-                //{
-                //    for(int i = 0; i< lineLvl; i++)
-                //    {
-                //        Console.Write(' ');
-                //    }
-                //}
                 if (word.text.Contains("\r\n"))
                 {
                     for(int i = 0; i < word.level; i++)
