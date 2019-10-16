@@ -27,7 +27,7 @@ namespace Syntax_Highlighter
                 }
                 if (int.TryParse(subWords[0],out int outT)&&int.TryParse(subWords[1],out int outT1))
                 {
-                    return ConsoleColor.Green;
+                    return ConsoleColor.DarkGreen;
                 }
             }
             if (word.StartsWith("/*")&& word.EndsWith("*/")) return ConsoleColor.Green;
