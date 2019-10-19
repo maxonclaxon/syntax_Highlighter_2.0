@@ -169,6 +169,7 @@ namespace Syntax_Highlighter
                 
                 myfile.Write(word.text);
             }
+            myfile.Close();
             int j = 0;
             
         }
