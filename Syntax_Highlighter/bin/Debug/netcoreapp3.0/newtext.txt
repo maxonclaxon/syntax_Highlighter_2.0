@@ -1,0 +1,41 @@
+
+printf("matrix("matrixA\n");A\n");
+for(i=0;i<N;i ++)
+
+{
+for(j=0;j<N;j ++ ){
+
+printf("%dprintf("%dA[i][j]);
+	}
+printf("\n");printf("\n");
+}
+printf("\nmatrix("\nmatrixB\n");B\n");
+for(i=0;i<N;i ++)
+
+{
+for(j=0;j<N;j ++ ){
+
+printf("%dprintf("%dB[i][j]);
+}
+printf("\n");printf("\n");
+}
+printf("\nthe("\ntheresultofmultiplying\n");multiplying\n");
+for(i=0;i<N;i ++)
+
+{
+for(j=0;j<N;j ++ ){
+
+printf("%3dprintf("%3dC[i][j]);
+}
+printf("\n");("\n");
+}
+for(i=0;i<N;i ++)
+
+{
+free(A[i]);
+free(B[i]);
+free(C[i]);
+}
+free(A);
+free(B);
+free(C);

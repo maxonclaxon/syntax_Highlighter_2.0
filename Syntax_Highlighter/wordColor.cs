@@ -6,11 +6,13 @@ namespace Syntax_Highlighter
 {
     class wordColor
     {
-        static List<string> blue = new List<string>() {"void", "char", "signed", "unsigned", "short", "int", "long", "float", "double", "bool", "string", "if", "true", "false", "struct" };
+        static List<string> blue = new List<string>() {"NULL","for","void", "char", "signed", "unsigned", "short", "int", "long", "float", "double", "bool", "string", "if", "true", "false", "struct" };
         static List<string> darkGrey = new List<string>() { "#include" };
+        static List<string> yellow = new List<string>() { "printf" };
 
         static public ConsoleColor Wcolor(string word)
         {
+            if (yellow.Contains(word)) return ConsoleColor.DarkYellow;
             if (word == "") return ConsoleColor.White;
             if (blue.Contains(word)) return ConsoleColor.Blue;
             if (word == "#include") return ConsoleColor.DarkGray;

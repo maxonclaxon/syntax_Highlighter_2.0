@@ -35,8 +35,8 @@ namespace Syntax_Highlighter
         {
             Console.OutputEncoding = Encoding.UTF8;
             List<word> words= new List<word>();
-            string pathInput = @"C:\Users\qwerty\Desktop\kurs\code.txt";
-            string pathOutput = @"C:\Users\qwerty\Desktop\kurs\newtext.txt";
+            string pathInput = @"code.txt";
+            string pathOutput = @"newtext.txt";
             bool inFunction = false;
             int lineLvl = 0;
             void splitWords(string line)
@@ -49,6 +49,33 @@ namespace Syntax_Highlighter
                 {
                     word newWord;
                     #region Замена цвета на красный, если находимся в строке
+                    if (word.Contains('"')&&awaitString==false)
+                    {
+                        awaitString = true;
+                        words.Add(new word(word.Substring(0, word.IndexOf('"')), ConsoleColor.White));
+                        string newW;
+                        newW = word.Substring(word.IndexOf('"'), word.Length - word.IndexOf('"'));
+                        if (newW.Length == word.Length) continue;
+                        if (newW.Contains('"'))
+                        {
+                            words.Add(new word(newW.Substring(1, newW.IndexOf('"')), ConsoleColor.DarkRed));
+                            if (newW.Substring(0, newW.IndexOf('"')).Length == newW.Length) continue;
+                            newW = newW.Substring(newW.IndexOf('"'), newW.Length-newW.IndexOf('"'));
+                            words.Add(new word(newW, ConsoleColor.White));
+                            awaitString = false;
+                        }
+                        continue;
+                    }
+                    if (word.Contains("") && awaitString == true)
+                    {
+                        string  newW = word;
+                        words.Add(new word(newW.Substring(0, newW.IndexOf('"')), ConsoleColor.DarkRed));
+                        if (newW.Substring(0, newW.IndexOf('"')).Length == newW.Length) continue;
+                        newW = newW.Substring(newW.IndexOf('"'), newW.Length - newW.IndexOf('"') );
+                        words.Add(new word(newW, ConsoleColor.White));
+                        awaitString = false;
+                    }
+                    #region старый перевод комментариев
                     if (awaitString == false && word.StartsWith('"'))
                     {
                         awaitString = true;
@@ -67,6 +94,7 @@ namespace Syntax_Highlighter
                         words.Add(new word(word, ConsoleColor.DarkRed));
                         continue;
                     }
+                    #endregion
                     #endregion
                     #region Замена цвета на зеленый, если находимся в комментарии
                     if (awaitComment == false && word.StartsWith("/*"))
@@ -129,8 +157,9 @@ namespace Syntax_Highlighter
                         words.Add(new word(word.Substring(word.IndexOf(";", 1)),inFunction, lineLvl));
                         continue;
                     }
-                    
-                     newWord = new word(word,inFunction, lineLvl);
+
+
+                    newWord = new word(word,inFunction, lineLvl);
                     words.Add(newWord);
                 }
                 words.Add(new word("\r\n",inFunction, lineLvl));

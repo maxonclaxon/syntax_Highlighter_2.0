@@ -9,3 +9,14 @@ W:\Reposetoryes\Syntax_Highlighter\Syntax_Highlighter\Syntax_Highlighter\bin\Deb
 W:\Reposetoryes\Syntax_Highlighter\Syntax_Highlighter\Syntax_Highlighter\bin\Debug\netcoreapp3.0\Syntax_Highlighter.pdb
 W:\Reposetoryes\Syntax_Highlighter\Syntax_Highlighter\Syntax_Highlighter\obj\Debug\netcoreapp3.0\Syntax_Highlighter.dll
 W:\Reposetoryes\Syntax_Highlighter\Syntax_Highlighter\Syntax_Highlighter\obj\Debug\netcoreapp3.0\Syntax_Highlighter.pdb
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\bin\Debug\netcoreapp3.0\Syntax_Highlighter.exe
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\bin\Debug\netcoreapp3.0\Syntax_Highlighter.deps.json
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\bin\Debug\netcoreapp3.0\Syntax_Highlighter.runtimeconfig.json
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\bin\Debug\netcoreapp3.0\Syntax_Highlighter.runtimeconfig.dev.json
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\bin\Debug\netcoreapp3.0\Syntax_Highlighter.dll
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\bin\Debug\netcoreapp3.0\Syntax_Highlighter.pdb
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\obj\Debug\netcoreapp3.0\Syntax_Highlighter.csprojAssemblyReference.cache
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\obj\Debug\netcoreapp3.0\Syntax_Highlighter.AssemblyInfoInputs.cache
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\obj\Debug\netcoreapp3.0\Syntax_Highlighter.AssemblyInfo.cs
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\obj\Debug\netcoreapp3.0\Syntax_Highlighter.dll
+C:\Users\ДНС\Desktop\Шарага\назаркин\syntax_Highlighter_2.0\Syntax_Highlighter\obj\Debug\netcoreapp3.0\Syntax_Highlighter.pdb
