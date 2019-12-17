@@ -39,62 +39,58 @@ namespace Syntax_Highlighter
             string pathOutput = @"newtext.txt";
             bool inFunction = false;
             int lineLvl = 0;
+            bool awaitComment = false;
             void splitWords(string line)
             {
                 string[] lineWords = line.Split(new string[] { " ", }, StringSplitOptions.RemoveEmptyEntries);
                 bool awaitString = false;
-                bool awaitComment = false;
+                bool awaitWord = false;
                 List<word> stringWords = new List<word>();
                 foreach(var word in lineWords)
                 {
                     word newWord;
                     #region Замена цвета на красный, если находимся в строке
-                    if (word.Contains('"')&&awaitString==false)
+                    if (!awaitString  && word.Contains('"'))
                     {
                         awaitString = true;
-                        words.Add(new word(word.Substring(0, word.IndexOf('"')), ConsoleColor.White));
-                        string newW;
-                        newW = word.Substring(word.IndexOf('"'), word.Length - word.IndexOf('"'));
-                        if (newW.Length == word.Length) continue;
-                        if (newW.Contains('"'))
+                        int indexOf2Quote=-1;
+                        int indexOfQuote = word.IndexOf('"');
+                        if (indexOfQuote > -1)
                         {
-                            words.Add(new word(newW.Substring(1, newW.IndexOf('"')), ConsoleColor.DarkRed));
-                            if (newW.Substring(0, newW.IndexOf('"')).Length == newW.Length) continue;
-                            newW = newW.Substring(newW.IndexOf('"'), newW.Length-newW.IndexOf('"'));
+                            indexOf2Quote = word.IndexOf('"', indexOfQuote+1);
+                        }
+                        words.Add(new word(word.Substring(0, indexOfQuote), ConsoleColor.White));
+                        string newW = word.Substring(indexOfQuote);
+                        if (indexOf2Quote > -1)
+                        {
+                            indexOf2Quote = newW.IndexOf('"',1);
+                            words.Add(new word(newW.Substring(0, indexOf2Quote + 1), ConsoleColor.DarkRed));
+                            string newW2 = newW.Substring(indexOf2Quote+1);
+                            words.Add(new word(newW2, ConsoleColor.White));
+                            continue;
+                        }
+                        else
+                        {
+                            words.Add(new word(newW, ConsoleColor.DarkRed));
+                            continue;
+                        }
+                    }
+                    if (awaitString)
+                    {
+                        if (word.IndexOf('"') == -1)
+                        {
+                            words.Add(new word(word, ConsoleColor.DarkRed));
+                            continue;
+                        }
+                        else
+                        {
+                            words.Add(new word(word.Substring(0, word.IndexOf('"') + 1), ConsoleColor.DarkRed));
+                            string newW = word.Substring(word.IndexOf('"')+1);
                             words.Add(new word(newW, ConsoleColor.White));
                             awaitString = false;
+                            continue;
                         }
-                        continue;
                     }
-                    if (word.Contains("") && awaitString == true)
-                    {
-                        string  newW = word;
-                        words.Add(new word(newW.Substring(0, newW.IndexOf('"')), ConsoleColor.DarkRed));
-                        if (newW.Substring(0, newW.IndexOf('"')).Length == newW.Length) continue;
-                        newW = newW.Substring(newW.IndexOf('"'), newW.Length - newW.IndexOf('"') );
-                        words.Add(new word(newW, ConsoleColor.White));
-                        awaitString = false;
-                    }
-                    #region старый перевод комментариев
-                    if (awaitString == false && word.StartsWith('"'))
-                    {
-                        awaitString = true;
-                        words.Add(new word(word, ConsoleColor.DarkRed));
-                        continue;
-                    }
-                    
-                    if (awaitString == true && word.Contains('"'))
-                    {
-                        awaitString = false;
-                        words.Add(new word(word, ConsoleColor.DarkRed));
-                        continue;
-                    }
-                    if (awaitString == true)
-                    {
-                        words.Add(new word(word, ConsoleColor.DarkRed));
-                        continue;
-                    }
-                    #endregion
                     #endregion
                     #region Замена цвета на зеленый, если находимся в комментарии
                     if (awaitComment == false && word.StartsWith("/*"))
@@ -115,50 +111,14 @@ namespace Syntax_Highlighter
                         continue;
                     }
                     #endregion
-                    if (word.Contains("=") )
-                    {
-                        if (word.IndexOf("=")!=word.Length-1)
-                        {
-                            if (word[word.IndexOf("=") + 1] != ' ') word.Insert(word.IndexOf("=") + 1, " ");
-                        }
-                        if (word.IndexOf("=") != 0)
-                        {
-                            if (word[word.IndexOf("=") - 1] != ' ') word.Insert(word.IndexOf("=") - 1, " ");
-                        }
-                        words.Add(new word(word.Substring(0, word.IndexOf("=")),inFunction, lineLvl));
-                        words.Add(new word("=",inFunction, lineLvl));
-                        words.Add(new word(word.Substring(word.IndexOf("=") + 1, word.Length - word.IndexOf("=") - 1),inFunction, lineLvl));
-                        continue;
+                    
 
-                    }
-                    if (word.Contains("+") && word.Length > 2)
-                    {
-                        var newW = word;
-                        if (newW.IndexOf("+") != 0)
-                        {
-                            if ( newW[newW.IndexOf("+")- 1] != ' ') newW = newW.Insert(newW.IndexOf("+"), " ");
-                        }
-                        if (newW.IndexOf("+") != newW.Length - 1)
-                        {
-                            if (newW[newW.IndexOf("+") + 1] != ' ') newW = newW.Insert(newW.IndexOf("+")+1, " ");
-                        }
-                        words.Add(new word(newW.Substring(0, newW.IndexOf("+")),inFunction, lineLvl));
-                        words.Add(new word("+",inFunction, lineLvl));
-                        newW = newW.Remove(0, newW.IndexOf("+")+1);
-                        if (newW.Contains("+")) splitWords(newW);
-                        else words.Add(new word(newW.Substring(newW.IndexOf("+") + 1, newW.Length - newW.IndexOf("+") - 1),inFunction, lineLvl));
-
-                        continue;
-
-                    }
                     if (word.Contains(";") && word.Length > 1)
                     {
-                        words.Add(new word(word.Substring(0, word.IndexOf(";")),inFunction, lineLvl));
-                        words.Add(new word(word.Substring(word.IndexOf(";", 1)),inFunction, lineLvl));
+                        words.Add(new word(word.Substring(0, word.IndexOf(";")), inFunction, lineLvl));
+                        words.Add(new word(word.Substring(word.IndexOf(";", 1)), inFunction, lineLvl));
                         continue;
                     }
-
-
                     newWord = new word(word,inFunction, lineLvl);
                     words.Add(newWord);
                 }
@@ -178,7 +138,63 @@ namespace Syntax_Highlighter
                     inFunction = true;
                     lineLvl += 2;
                 }
-                splitWords(line);
+                string newLine = line;
+                if (newLine.Contains(')'))
+                {
+                    if (newLine.IndexOf(')') + 1 != newLine.Length && newLine[newLine.IndexOf(')') + 1] != ' ')
+                    {
+                        newLine=newLine.Insert(newLine.IndexOf(')') + 1, " ");
+                    }
+                    if (newLine.IndexOf(')') != 0 && newLine[newLine.IndexOf(')') - 1] != ' ')
+                    {
+                        newLine=newLine.Insert(newLine.IndexOf(')') - 1, " ");
+                    }
+                }
+                if (newLine.Contains('('))
+                {
+                    if (newLine.IndexOf('(') + 1 != newLine.Length && newLine[newLine.IndexOf('(') + 1] != ' ')
+                    {
+                        newLine=newLine.Insert(newLine.IndexOf('(') + 1, " ");
+                    }
+                    if (newLine.IndexOf('(') != 0 && newLine[newLine.IndexOf('(') - 1] != ' ')
+                    {
+                        newLine=newLine.Insert(newLine.IndexOf('(') - 1, " ");
+                    }
+                }
+                if (newLine.Contains('='))
+                {
+                    if (newLine.IndexOf('=') + 1 != newLine.Length && newLine[newLine.IndexOf('=') + 1] != ' ')
+                    {
+                        newLine=newLine.Insert(newLine.IndexOf('=') + 1, " ");
+                    }
+                    if (newLine.IndexOf('=') != 0 && newLine[newLine.IndexOf('=') - 1] != ' ')
+                    {
+                        newLine=newLine.Insert(newLine.IndexOf('=') - 1, " ");
+                    }
+                }
+                //if (newLine.Contains('*'))
+                //{
+                //    if (newLine.IndexOf('*') + 1 != newLine.Length && newLine[newLine.IndexOf('*') + 1] != ' ')
+                //    {
+                //        newLine=newLine.Insert(newLine.IndexOf('*') + 1, " ");
+                //    }
+                //    if (newLine.IndexOf('*') != 0 && newLine[newLine.IndexOf('*') - 1] != ' ')
+                //    {
+                //        newLine=newLine.Insert(newLine.IndexOf('*') - 1, " ");
+                //    }
+                //}
+                //if (newLine.Contains('/'))
+                //{
+                //    if (newLine.IndexOf('/') + 1 != newLine.Length && newLine[newLine.IndexOf('/') + 1] != ' ')
+                //    {
+                //        newLine=newLine.Insert(newLine.IndexOf('/') + 1, " ");
+                //    }
+                //    if (newLine.IndexOf('/') != 0 && newLine[newLine.IndexOf('/') - 1] != ' ')
+                //    {
+                //        newLine=newLine.Insert(newLine.IndexOf('/') - 1, " ");
+                //    }
+                //}
+                splitWords(newLine);
                 
             }
             StreamWriter myfile = new StreamWriter(pathOutput);

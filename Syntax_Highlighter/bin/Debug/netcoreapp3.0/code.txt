@@ -1,34 +1,244 @@
-
-printf ("matrix A\n");
-for (i = 0; i < N; i++)
-{
-    for (j = 0; j < N; j++){
-        printf("%d ", A[i][j]);
-	}
-    printf("\n");
-}
-printf ("\nmatrix B\n");
-for (i = 0; i < N; i++)
-{
-    for (j = 0; j < N; j++){
-        printf("%d ", B[i][j]);
+#include <stdlib.h>
+#include <iostream>
+#include <ctime>
+#include <iomanip>
+ 
+using namespace std;
+//освобождение памяти
+int del (int **M, int n) {
+    
+    for (int i = 0; i < n; i++) {
+        delete []M[i];
     }
-    printf("\n");
+    delete []M;
 }
-printf ("\nthe result of multiplying\n");
-for (i = 0; i < N; i++)
-{
-    for (j = 0; j < N; j++){
-        printf("%3d ", C[i][j]);
+//вывод матрицы
+int pm (int **M, int n) {
+    cout << endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << setw(4) << M[i][j];
+        }
+        cout << endl;
+    }   
+}
+//умножение
+int multiply (int **A, int **B, int n) {
+    
+    int **C = new int *[n];
+    
+    cout << endl;
+    for (int i = 0; i < n; i++) {
+        
+        C[i] = new int [n];
+        
+        for (int j = 0; j < n; j++) {
+            
+            C[i][j] = 0;
+            
+            for (int k = 0; k < n; k++) {
+                
+                C[i][j] += A[i][k] * B[k][j];
+            }
+            
+            cout << setw(6) << C[i][j];
+        }
+        cout << endl;
     }
-    printf ("\n");
 }
-for (i = 0; i < N; i++)
-{
-    free(A[i]);
-    free(B[i]);
-    free(C[i]);
+//сверху вниз
+int stack (int **A, int **B, int n) {
+    
+    int **C = new int *[2*n];
+    
+    for (int i = 0; i < 2*n; i++) {
+        
+        C[i] = new int [n];
+        
+        for (int j = 0; j < n; j++) {
+            
+            if (i < n)
+            C[i][j] = A[i][j];
+            else
+            C[i][j] = B[i - n][j];
+            
+            cout << setw(4) << C[i][j];
+        }
+        cout << endl;
+    }
+    
+    del (C, 2*n);
 }
-free(A);
-free(B);
-free(C);
+//слева направо
+int augment (int **A, int **B, int n) {
+    
+    int **C = new int *[n];
+    
+    for (int i = 0; i < n; i++) {
+        
+        C[i] = new int [2*n];
+        
+        for (int j = 0; j < 2*n; j++) {
+            
+            if (j < n)
+            C[i][j] = A[i][j];
+            else
+            C[i][j] = B[i][j - n];
+            
+            cout << setw(4) << C[i][j];
+        }
+        cout << endl;
+    }
+    
+    del (C, n);
+}
+//слияние
+int merge (int **A, int **B, int n) {
+    
+    while (1) {
+        int p;
+        cout << "\n[0] - Выход | [1] Сверху вниз | [2] Слева направо\n";
+/*
+augment() – матрица, сформированная слиянием матриц – аргументов слева направо;
+stack() – матрица, сформированная слиянием матриц – аргументов сверху вниз.
+*/
+        do {
+            cout << "Вариант = ";
+            cin >> p;
+        } while (p != 1 && p != 2 && p != 0);
+        
+        if (p == 0) return 0;
+        else
+            if (p == 1) stack (A,B,n);
+            else augment (A,B,n);    
+    }
+}
+//начало или конец
+int start (int n) {
+    
+    do {
+        cout << "\n[0] - Выход | Введите размерность = ";
+        cin >> n;
+    } while (n != 0 && n < 0);
+    
+    if (n > 0) {
+    
+        int **A = new int *[n];
+        int **B = new int *[n];
+            
+        for (int i = 0; i < n; i++) {
+                
+            A[i] = new int [n];
+            B[i] = new int [n];
+                
+            for (int j = 0; j < n; j++) {
+                    
+                A[i][j] = rand ()%100;
+                B[i][j] = rand ()%100;
+            }
+        }
+            
+        pm (A,n);
+        pm (B,n);
+        
+        int p = 0;
+        
+        do {
+            cout << "\n[1] - Умножение | [2] Слияние\nВариант = ";
+            cin >> p;
+        } while (p != 1 && p != 2);
+        
+        if (p == 1) multiply (A,B,n);
+        else merge (A,B,n);
+            
+        del (A,n);
+        del (B,n);
+    }
+    else return n; 
+}
+ 
+int main() {
+    setlocale( LC_ALL, "Russian" );
+    srand (time(0));
+    
+    int n = 0;
+    do {
+        n = start (n);
+    } while (n != 0);
+    
+    return 0;   
+}
+/*
+ 
+[0] - Выход | Введите размерность = 5
+ 
+  56  67  89  13  56
+  67  74  83  20  14
+  15  21  91  91  35
+  44  60   9  11  75
+  92  98  81  19  80
+ 
+  71  15  25  60  96
+  55  46  20  39  60
+  67  73  94  22  36
+  17   4  10  40  11
+  90  79  53  87  55
+ 
+[1] - Умножение | [2] Слияние
+Вариант = 1
+ 
+ 18885 14895 14204 13323 15823
+ 15988 11654 11899 10750 14850
+ 13014 10963 12114 10406  8902
+ 13964 10046  7231 12143 12394
+ 24872 18197 16304 18844 22237
+ 
+[0] - Выход | Введите размерность = 6
+ 
+  47  36  13  89  85  97
+  34  42  59  33  42  53
+  29  89   1  42  39  93
+  88  87  72  85  14  94
+  79  51   9  90  62  27
+   9  39  54   9  68  21
+ 
+  20  34  12  72   3  28
+  25  13  13  61  30  90
+  19  68  52  19  74  78
+  28  81   0  66  84   6
+  54  95  84  37  96  93
+  99  60  56  56  79  31
+ 
+[1] - Умножение | [2] Слияние
+Вариант = 2
+ 
+[0] - Выход | [1] Сверху вниз | [2] Слева направо
+Вариант = 1
+  47  36  13  89  85  97
+  34  42  59  33  42  53
+  29  89   1  42  39  93
+  88  87  72  85  14  94
+  79  51   9  90  62  27
+   9  39  54   9  68  21
+  20  34  12  72   3  28
+  25  13  13  61  30  90
+  19  68  52  19  74  78
+  28  81   0  66  84   6
+  54  95  84  37  96  93
+  99  60  56  56  79  31
+ 
+[0] - Выход | [1] Сверху вниз | [2] Слева направо
+Вариант = 2
+  47  36  13  89  85  97  20  34  12  72   3  28
+  34  42  59  33  42  53  25  13  13  61  30  90
+  29  89   1  42  39  93  19  68  52  19  74  78
+  88  87  72  85  14  94  28  81   0  66  84   6
+  79  51   9  90  62  27  54  95  84  37  96  93
+   9  39  54   9  68  21  99  60  56  56  79  31
+ 
+[0] - Выход | [1] Сверху вниз | [2] Слева направо
+Вариант = 0
+ 
+[0] - Выход | Введите размерность = 0
+завершение программы
+*/
