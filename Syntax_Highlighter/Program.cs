@@ -158,7 +158,7 @@ namespace Syntax_Highlighter
                     }
                     if (newLine.IndexOf('(') != 0 && newLine[newLine.IndexOf('(') - 1] != ' ')
                     {
-                        newLine=newLine.Insert(newLine.IndexOf('(') - 1, " ");
+                        newLine=newLine.Insert(newLine.IndexOf('(') , " ");
                     }
                 }
                 if (newLine.Contains('='))
@@ -169,31 +169,9 @@ namespace Syntax_Highlighter
                     }
                     if (newLine.IndexOf('=') != 0 && newLine[newLine.IndexOf('=') - 1] != ' ')
                     {
-                        newLine=newLine.Insert(newLine.IndexOf('=') - 1, " ");
+                        newLine=newLine.Insert(newLine.IndexOf('=') , " ");
                     }
                 }
-                //if (newLine.Contains('*'))
-                //{
-                //    if (newLine.IndexOf('*') + 1 != newLine.Length && newLine[newLine.IndexOf('*') + 1] != ' ')
-                //    {
-                //        newLine=newLine.Insert(newLine.IndexOf('*') + 1, " ");
-                //    }
-                //    if (newLine.IndexOf('*') != 0 && newLine[newLine.IndexOf('*') - 1] != ' ')
-                //    {
-                //        newLine=newLine.Insert(newLine.IndexOf('*') - 1, " ");
-                //    }
-                //}
-                //if (newLine.Contains('/'))
-                //{
-                //    if (newLine.IndexOf('/') + 1 != newLine.Length && newLine[newLine.IndexOf('/') + 1] != ' ')
-                //    {
-                //        newLine=newLine.Insert(newLine.IndexOf('/') + 1, " ");
-                //    }
-                //    if (newLine.IndexOf('/') != 0 && newLine[newLine.IndexOf('/') - 1] != ' ')
-                //    {
-                //        newLine=newLine.Insert(newLine.IndexOf('/') - 1, " ");
-                //    }
-                //}
                 splitWords(newLine);
                 
             }

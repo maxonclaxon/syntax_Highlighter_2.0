@@ -6,7 +6,7 @@ namespace Syntax_Highlighter
 {
     class wordColor
     {
-        static List<string> blue = new List<string>() {"while","new","setw","using","namespace","delete","NULL","for","void", "char", "signed", "unsigned", "short", "int", "long", "float", "double", "bool", "string", "if", "true", "false", "struct","else","rand","do","del" };
+        static List<string> blue = new List<string>() {"while","new","setw","using","namespace","delete","NULL","for","void", "char", "signed", "unsigned", "short", "int", "long", "float", "double", "bool", "string", "if", "true", "false", "struct","else","rand","do"};
         static List<string> darkGrey = new List<string>() { "#include" };
         static List<string> yellow = new List<string>() { "printf","cout","endl" };
 
